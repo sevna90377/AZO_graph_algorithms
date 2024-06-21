@@ -1,14 +1,18 @@
 #pragma once
 #include <iostream>
 #include <conio.h>
-#include "AdjacencyMatrix.h"
+#include "Graph.h"
 
 class Menu
 {
 public:
 	
-	Menu() {};
-	~Menu() {};
+	Menu() {
+		graph = new Graph();
+	};
+	~Menu() {
+		delete graph;
+	};
 
 	int main();
 
@@ -18,9 +22,6 @@ private:
 	void menuSPP();
 	void menuMFP();
 
-	AdjacencyMatrix am;
-
-
-	int BIG_WEIGHT = 100;
+	Graph* graph;
 };
 

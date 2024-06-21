@@ -1,30 +1,48 @@
 #include "AdjacencyMatrix.h"
+#include <string>
+#include <iostream>
 
 void AdjacencyMatrix::display() {
 	std::cout << "Graf w reprezentacji macierzowej: \n ";
 	for (int i = 0; i < graph_order; i++) {
-		std::cout << " " << i;
+		std::cout << "  " << pad(std::to_string(i));
 	}
 	std::cout << "\n";
 	for (int i = 0; i < graph_order; i++) {
 		std::cout << i;
 		for (int j = 0; j < graph_order; j++) {
-			std::cout << " " << matrix[i][j];
+			std::cout << "  " << pad(std::to_string(matrix[i][j]));
 		}
 		std::cout << "\n";
 	}
 }
 
+std::string AdjacencyMatrix::pad(std::string string) {
+	std::string padding = " ";
+	std::string result = string;
+	int size = 2 - string.length();
+	if (size < 0)
+	{
+		return "  ";
+	}
+	for (int i = 0; i < size; i++)
+	{
+		result = padding + result;
+	}
+	return result;
+}
+
 void AdjacencyMatrix::allocate(int size) {
 	deallocate();		//delokacja ewentualnie obecnej macierzy
 
-	matrix = new int* [size];
-	graph_order = size;
+	matrix = new int* [size];	//alokacja pamiêci
+	graph_order = size;			//przypisanie nowego rozmiaru
 
+	//zape³nienie nowej macierzy
 	for (int i = 0; i < graph_order; i++) {
-		matrix[i] = new int[graph_order];
+		matrix[i] = new int [graph_order];
 		for (int j = 0; j < graph_order; j++) {
-			matrix[i][j] = 0;	//zero oznacza brak krawêdzi w grafie
+			matrix[i][j] = 0;	//0 oznacza brak krawêdzi w grafie
 		}
 	}
 }
@@ -42,34 +60,7 @@ void AdjacencyMatrix::addEdge(int v1, int v2, int weight, bool directed) {
 	if (!directed) matrix[v2][v1] = weight;	//w grafie nieskierowanym dodawana jest ta sama krawêdŸ w "drug¹ stronê"
 }
 
-int AdjacencyMatrix::loadFromFile(std::string filename, bool directed) {
-	std::ifstream myFile;
-	int graph_size, graph_order;
-	int v1, v2, weight;
+void AdjacencyMatrix::generateRandom(int graph_order, int density, bool directed)
+{
 
-	myFile.open(filename);
-
-	if (myFile.is_open())
-	{
-		//usuniêcie poprzedniego grafu
-		deallocate();
-
-		//pobranie iloœci wartoœci do odczytania z pierwszej linijki pliku
-		myFile >> graph_size >> graph_order;
-
-		//alokacja macierzy s¹siedztwa
-		allocate(graph_order);
-
-		for (int i = 0; i < graph_size; i++) {
-			myFile >> v1 >> v2 >> weight;
-			addEdge(v1, v2, weight, directed);
-		}
-
-		myFile.close();
-
-		return 0;
-	}
-	else {
-		return 1;
-	}
 }

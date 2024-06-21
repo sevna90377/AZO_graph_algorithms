@@ -23,5 +23,5 @@ void List::push(Edge e){
 		//Przypisanie ostatniemu elementowi wskaŸnika na nowy element
 		lastElement->next = tailPointer;
 	}
-	list_length++;
+	length++;
 }

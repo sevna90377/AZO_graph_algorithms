@@ -1,23 +1,19 @@
 #pragma once
 
-#include "DataStructure.h"
 #include "Heap.h"
 
-class List : DataStructure{
-
-private:
+class List{
+public:
 	struct ListElement {
 		Edge edge;
 		ListElement* next;
 		ListElement* previous;
 	};
 
-public:
-
 	List() {
-		List::headPointer = nullptr;
-		List::tailPointer = nullptr;
-		List::length = 0;
+		headPointer = nullptr;
+		tailPointer = nullptr;
+		length = 0;
 	}
 	~List() {
 		ListElement* holder;
@@ -29,9 +25,10 @@ public:
 		}
 	}
 
-private:
+	void push(Edge e);
 
+private:
 	ListElement* headPointer;
 	ListElement* tailPointer;
-
+	int length;
 };
