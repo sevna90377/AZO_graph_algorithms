@@ -1,27 +1,27 @@
 #include "Heap.h"
 
 //dodawanie nowej krawêdzi do kopca
-void Heap::push(Edge e) {
+void Heap::push(Edge* e) {
 
-    Edge* newPointer = new Edge[heap_length + 1];
+    Edge** newPointer = new Edge*[heap_length + 1];
 
     for (int i = 0; i < heap_length; i++) {
         newPointer[i] = rootPointer[i];
     }
 
     newPointer[heap_length] = e;
-
-    delete rootPointer;
-    rootPointer = newPointer;
     heap_length++;
 
-    heapifyUp((heap_length - 1) >> 1);
+    delete[] rootPointer;
+    rootPointer = newPointer;
+
+    heapifyUp(floor((heap_length - 2) / 2));
 }
 
 //usuwanie korzenia kopca
-Edge Heap::pop() {
+Edge* Heap::pop() {
 
-    Edge holder = rootPointer[0];
+    Edge* holder = rootPointer[0];
 
     rootPointer[0] = rootPointer[heap_length - 1];
     heap_length--;
@@ -36,24 +36,24 @@ void Heap::heapifyUp(int i) {
     int r = 2 * i + 2;
     int smallest;
 
-    if (l > 0 && l < heap_length) {
+    if (l < heap_length) {
 
         //sprawdzenie czy lewy potomek jest mniejszy od swojego ojca
-        if (rootPointer[l].weight < rootPointer[i].weight) {
+        if (rootPointer[l]->weight < rootPointer[i]->weight) {
             smallest = l;
         }
         else {
             smallest = i;
         }
 
-        //sprawdzenie czy prawy potomek jest wiêkszy od swojego ojca
-        if (r < heap_length && rootPointer[r].weight < rootPointer[smallest].weight) {
+        //sprawdzenie czy prawy potomek jest mniejszy od ojca lub lewego potomka
+        if (r < heap_length && rootPointer[r]->weight < rootPointer[smallest]->weight) {
             smallest = r;
         }
 
         //zamiana wartoœci miejscami
         if (smallest != i) {
-            Edge holder;
+            Edge* holder;
 
             holder = rootPointer[i];
             rootPointer[i] = rootPointer[smallest];
@@ -73,7 +73,7 @@ void Heap::heapifyDown(int i) {
     if (l > 0 && l < heap_length) {
 
         //sprawdzenie czy lewy potomek jest mniejszy od swojego ojca
-        if (rootPointer[l].weight < rootPointer[i].weight) {
+        if (rootPointer[l]->weight < rootPointer[i]->weight) {
             smallest = l;
         }
         else {
@@ -82,14 +82,14 @@ void Heap::heapifyDown(int i) {
 
         if (heap_length > 2) {
             //sprawdzenie czy prawy potomek jest wiêkszy od swojego ojca
-            if (r < heap_length && rootPointer[r].weight < rootPointer[smallest].weight) {
+            if (r < heap_length && rootPointer[r]->weight < rootPointer[smallest]->weight) {
                 smallest = r;
             }
         }
 
         //zamiana wartoœci miejscami
         if (smallest != i) {
-            Edge holder;
+            Edge* holder;
 
             holder = rootPointer[i];
             rootPointer[i] = rootPointer[smallest];
@@ -110,7 +110,7 @@ void Heap::display()
         std::cout << std::endl;
 
         for (int i = 0; i < heap_length; i++) {     //wypisanie tablicowe kopca
-            std::cout << rootPointer[i].weight << ", ";
+            std::cout << rootPointer[i]->weight << ", ";
         }
     }
     else {
@@ -135,7 +135,7 @@ void Heap::display(std::string sp, std::string sn, int from)
 
         s = s.substr(0, sp.length() - 2);
 
-        std::cout << s << sn << rootPointer[from].weight << "\n";
+        std::cout << s << sn << rootPointer[from]->weight << "\n";
 
         s = sp;
         if (sn == cl) s[s.length() - 2] = ' ';

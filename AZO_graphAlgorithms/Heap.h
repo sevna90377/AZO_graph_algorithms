@@ -3,8 +3,6 @@
 #include <iostream>
 #include "Edge.h"
 
-struct Edge;
-
 class Heap{
 public:
 
@@ -17,13 +15,13 @@ public:
 	};
 
 	void display();
-	void push(Edge e);
-	Edge pop();
-
-private:
-	Edge* rootPointer;
+	void push(Edge* e);
+	Edge* pop();
 
 	int heap_length;
+
+private:
+	Edge** rootPointer;
 
 	void heapifyUp(int i);
 	void heapifyDown(int i);
