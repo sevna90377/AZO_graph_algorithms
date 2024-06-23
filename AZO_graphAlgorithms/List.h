@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Heap.h"
+#include "Edge.h"
 
 class List{
 public:
 	struct ListElement {
-		Edge edge;
+		Edge* edge;
 		ListElement* next;
 		ListElement* previous;
 	};
@@ -13,22 +14,18 @@ public:
 	List() {
 		headPointer = nullptr;
 		tailPointer = nullptr;
-		length = 0;
 	}
 	~List() {
-		ListElement* holder;
 		
-		for (int i = 0; i < length; i++) {
-			holder = headPointer->next;
-			delete headPointer;
-			headPointer = holder;
-		}
 	}
 
-	void push(Edge e);
+	void push(Edge* e);
+	Edge* get();
+	void deleteAll();
+	void display(int option);	// 1 - macierz 2 - lista
 
 private:
 	ListElement* headPointer;
 	ListElement* tailPointer;
-	int length;
+	ListElement* iterator;
 };

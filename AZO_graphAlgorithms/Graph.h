@@ -1,21 +1,45 @@
 #pragma once
-#include "AdjacencyMatrix.h"
+#include "IncidencyMatrix.h"
+#include "AdjacencyList.h"
+#include "Heap.h"
+#include "List.h"
 #include <iostream>
 #include <fstream>
+#include "Edge.h"
 
 class Graph
 {
 public:
-	struct Edge {
-		int v1, v2, weight;
+
+	void heaptest();
+
+	Graph() {
+		matrix_rep = new IncidencyMatrix();
+		list_rep = new AdjacencyList();
+		graph = nullptr;
+		size = 0;
+		order = 0;
+	};
+	~Graph() {
+		delete matrix_rep;
+		delete list_rep;
+
+		for (int i = 0; i < order; i++) {
+			delete graph[i];
+		}
+		delete graph;
 	};
 
 	const int MAX_WEIGHT = 99;
 
-	std::string filename;
-	void generateRandomGraph(int graph_order, int graph_density);
+	void display();
+	
+	void generateRandomGraph(int graph_order, int graph_density, bool directed);
 	void loadFromFile(std::string filename);
+	void init(bool directed);
 	int minDensity(int graph_order, bool directed);
+
+	void mst_kruskal();
 
 private:
 
@@ -24,10 +48,9 @@ private:
 
 	Edge** graph;
 
-	int add_edge(int pos, int v1, int v2, int weight);
+	void add_edge(int pos, int v1, int v2, int weight);
 
-	AdjacencyMatrix* am;
-
-
+	IncidencyMatrix* matrix_rep;
+	AdjacencyList* list_rep;
 };
 

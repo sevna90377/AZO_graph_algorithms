@@ -20,7 +20,7 @@ private:
 
 	void menuMST();
 	void menuSPP();
-	void menuMFP();
+	//void menuMFP();
 
 	Graph* graph;
 };
