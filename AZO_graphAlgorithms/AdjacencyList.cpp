@@ -93,40 +93,42 @@ void AdjacencyList::addEdge(int v1, int v2, int value, bool directed) {
 	}
 }
 
-/*
 void AdjacencyList::mst_kruskal() {
 
-	List resultList;
+	List* result = new List();
 
-	//utworzenie kolejek priorytetowych zawieraj¹cych krawêdzie grafu
-	Edge e;
+	//utworzenie kolejki priorytetowej krawêdzi
+	Heap* minEdgeHeap = new Heap();
+	Edge* e;
 
-	Heap priorityHeap;
 	ListNode* holder;
 	for (int i = 0; i < graph_order; i++) {
 		holder = adjList[i];
-		while (holder->next != nullptr) {
+		while (holder->next != nullptr) { 
 			holder = holder->next;
 			if (holder->node > i) {
-				e.v1 = i;
-				e.v2 = holder->node;
-				e.weight = holder->weight;
-				priorityHeap.push(e);
+				e = new Edge;
+				e->v1 = i;
+				e->v2 = holder->node;
+				e->weight = holder->weight;
+				minEdgeHeap->push(e);
 			}
 		}
 	}
 
-	DisjointSet disjointSet(graph_order);
-	while (priorityHeap.heap_length > 0) {
-		e = priorityHeap.pop();
-		if (!disjointSet.isOneSet(e.v1, e.v2)) {
-			resultList.addValue(e);
-			disjointSet.unionSets(e.v1, e.v2);
+	DisjointSets* sets = new DisjointSets(graph_order);
+	while (minEdgeHeap->heap_length > 0) {
+		e = minEdgeHeap->pop();
+		if (!sets->isOneSet(e->v1, e->v2)) {
+			result->push(e);
+			sets->unionSets(e->v1, e->v2);
 		}
 	}
 
-	resultList.display(0);
+	result->display(0);
 }
+
+/*
 void AdjacencyList::mst_prim() {
 
 	Heap heap;

@@ -86,7 +86,6 @@ void IncidencyMatrix::mst_kruskal()
 		}
 		minEdgeHeap->push(e);
 	}
-	minEdgeHeap->display();
 
 	//zbiór roz³¹czny do "kolorowania" odwiedzonych wierzcho³ków
 	DisjointSets* sets = new DisjointSets(graph_order);
@@ -102,4 +101,3 @@ void IncidencyMatrix::mst_kruskal()
 
 	result->display(1);
 }
-

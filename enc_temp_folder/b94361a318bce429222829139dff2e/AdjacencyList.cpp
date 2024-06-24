@@ -93,10 +93,9 @@ void AdjacencyList::addEdge(int v1, int v2, int value, bool directed) {
 	}
 }
 
-/*
 void AdjacencyList::mst_kruskal() {
 
-	List resultList;
+	List* resultList;
 
 	//utworzenie kolejek priorytetowych zawieraj¹cych krawêdzie grafu
 	Edge e;

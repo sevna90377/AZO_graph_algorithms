@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Heap.h"
 #include "List.h"
+#include "DisjointSets.h"
 
 class AdjacencyList
 {

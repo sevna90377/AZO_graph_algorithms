@@ -48,7 +48,7 @@ void List::deleteAll() {
 void List::display(int option) {
 
 	if (headPointer != nullptr) {
-		std::cout << "Drzewo rozpinajace bedace wynikiem algorytmu dzia³aj¹cego na reprezentacji";
+		std::cout << "Wynik algorytmu dzialajacego na reprezentacji";
 		if (option == 1) {
 			std::cout << " macierzowej:\n";
 		}

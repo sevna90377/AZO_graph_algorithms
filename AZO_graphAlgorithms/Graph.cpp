@@ -189,5 +189,6 @@ int Graph::minDensity(int graph_order, bool directed)
 void Graph::mst_kruskal()
 {
 	matrix_rep->mst_kruskal();
+	list_rep->mst_kruskal();
 }
 
