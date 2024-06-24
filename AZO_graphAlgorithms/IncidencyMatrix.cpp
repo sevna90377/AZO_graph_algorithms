@@ -94,7 +94,6 @@ void IncidencyMatrix::mst_kruskal()
 
 	while (minEdgeHeap->heap_length > 0) {
 		e = minEdgeHeap->pop();
-		minEdgeHeap->display();
 		if (!sets->isOneSet(e->v1, e->v2)) {
 			result->push(e);
 			sets->unionSets(e->v1, e->v2);
