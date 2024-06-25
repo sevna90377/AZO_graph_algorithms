@@ -193,6 +193,9 @@ void Menu::testList()
 		if (n == 128) {
 			s = 10;
 		}
+		if (n > 257) {
+			s = 1;
+		}
 		std::cout << n << std::endl;
 
 		suma = 0;
@@ -302,6 +305,9 @@ void Menu::testMacierzy()
 	for (int n = 8; n < 600; n *= 2) {
 		if (n == 128) {
 			s = 10;
+		}
+		if (n > 257) {
+			s = 1;
 		}
 		std::cout << n << std::endl;
 
