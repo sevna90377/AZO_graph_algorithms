@@ -189,7 +189,7 @@ void Menu::testList()
 
 	resultFile << ";;;kruskal;prim;dijkstra\n";
 	int s = 100;
-	for (int n = 8; n < 16; n *= 2) {
+	for (int n = 8; n < 600; n *= 2) {
 		if (n == 128) {
 			s = 10;
 		}
@@ -299,7 +299,7 @@ void Menu::testMacierzy()
 
 	resultFile << ";;;kruskal;prim;dijkstra\n";
 	int s = 100;
-	for (int n = 8; n < 20; n *= 2) {
+	for (int n = 8; n < 600; n *= 2) {
 		if (n == 128) {
 			s = 10;
 		}
