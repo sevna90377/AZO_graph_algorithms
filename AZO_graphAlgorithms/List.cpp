@@ -73,10 +73,10 @@ int List::sumWeight() {
 	int weight = 0;
 	ListElement* holder = headPointer;
 
-	do {
+	while (holder != nullptr) {
 		weight += holder->edge->weight;
 		holder = holder->next;
-	} while (holder != nullptr);
+	}
 
 	return weight;
 }

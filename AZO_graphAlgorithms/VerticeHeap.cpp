@@ -68,16 +68,13 @@ void VerticeHeap::heapifyUp(int i) {
 void VerticeHeap::heapifyDown(int i) {
     int l = 2 * i + 1;
     int r = 2 * i + 2;
-    int smallest;
+    int smallest = i;
 
     if (l > 0 && l < heap_length) {
 
         //sprawdzenie czy lewy potomek jest mniejszy od swojego ojca
         if (rootPointer[l]->distance < rootPointer[i]->distance) {
             smallest = l;
-        }
-        else {
-            smallest = i;
         }
 
         if (heap_length > 2) {

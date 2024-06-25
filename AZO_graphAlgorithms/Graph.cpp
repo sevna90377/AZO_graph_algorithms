@@ -90,6 +90,7 @@ void Graph::generateRandomGraph(int graph_order, int graph_density, bool directe
 		weight = rand() % MAX_WEIGHT + 1;
 		add_edge(i, previous, next, weight);
 	}
+	init(directed);
 }
 
 void Graph::init(bool directed)

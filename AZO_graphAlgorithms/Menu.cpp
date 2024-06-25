@@ -26,7 +26,9 @@ int Menu::main()
 
 			break;
 
-		case 's':		//w³asny case do przeprowadzania testów
+		case 't':		//w³asny case do przeprowadzania testów
+			testList();
+			testMacierzy();
 			break;
 
 		default:
@@ -76,7 +78,6 @@ void Menu::menuMST()
 			std::cin >> density;
 			if (density >= min_density) {
 				graph->generateRandomGraph(order, density, false);
-				graph->init(false);
 			}
 			
 			break;
@@ -118,8 +119,8 @@ void Menu::menuSPP()
 		std::cout << "2. Wygeneruj losowo\n";
 		std::cout << "3. Wyswietl\n";
 		std::cout << "\t4. Algorytm Dijkstry\n";
-		std::cout << "\t5. Algorytm Forda-Bellmana\n";
-		std::cout << "\t6. Wybor wierzcholka poczatkowego i koncowego\n";
+		//std::cout << "\t5. Algorytm Forda-Bellmana\n";
+		std::cout << "6. Wybor wierzcholka poczatkowego i koncowego\n";
 		std::cout << "> ";
 		opt = _getche();
 		std::cout << "\n";
@@ -144,7 +145,6 @@ void Menu::menuSPP()
 			std::cin >> density;
 			if (density >= min_density) {
 				graph->generateRandomGraph(order, density, true);
-				graph->init(true);
 			}
 
 			break;
@@ -176,7 +176,237 @@ void Menu::menuSPP()
 
 	} while (opt != '0');
 }
+
 int main(void) {
 	Menu* menu = new Menu;
 	return menu->main();
+}
+
+void Menu::testList()
+{
+	resultFileName = "Listy.csv";
+	resultFile.open(resultFileName);
+
+	resultFile << ";;;kruskal;prim;dijkstra\n";
+	int s = 100;
+	for (int n = 8; n < 16; n *= 2) {
+		if (n == 128) {
+			s = 10;
+		}
+		std::cout << n << std::endl;
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 25, false);
+			timer_start();
+			graph->list_rep->mst_kruskal();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << "lista; " << n << "; 25; " << (double)suma / s << "; ";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 25, false);
+			timer_start();
+			graph->list_rep->mst_prim();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 25, false);
+			timer_start();
+			graph->list_rep->spp_dijkstra(0, n-1);
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << "\n";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 50, false);
+			timer_start();
+			graph->list_rep->mst_kruskal();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << "lista; " << n << "; 50;" << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 50, false);
+			timer_start();
+			graph->list_rep->mst_prim();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 50, false);
+			timer_start();
+			graph->list_rep->spp_dijkstra(0, n - 1);
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << "\n";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 99, false);
+			timer_start();
+			graph->list_rep->mst_kruskal();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << "lista; " << n << "; 99;" << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 99, false);
+			timer_start();
+			graph->list_rep->mst_prim();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 99, false);
+			timer_start();
+			graph->list_rep->spp_dijkstra(0, n - 1);
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << "\n";
+	}
+
+
+
+	
+	resultFile.close();
+}
+
+void Menu::testMacierzy()
+{
+	resultFileName = "Macierze.csv";
+	resultFile.open(resultFileName);
+
+	resultFile << ";;;kruskal;prim;dijkstra\n";
+	int s = 100;
+	for (int n = 8; n < 20; n *= 2) {
+		if (n == 128) {
+			s = 10;
+		}
+		std::cout << n << std::endl;
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 25, false);
+			timer_start();
+			graph->matrix_rep->mst_kruskal();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << "macierz; " << n << "; 25; " << (double)suma / s << "; ";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 25, false);
+			timer_start();
+			graph->matrix_rep->mst_prim();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 25, false);
+			timer_start();
+			graph->matrix_rep->spp_dijkstra(0, n - 1);
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << "\n";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 50, false);
+			timer_start();
+			graph->matrix_rep->mst_kruskal();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << "macierz; " << n << "; 50;" << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 50, false);
+			timer_start();
+			graph->matrix_rep->mst_prim();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 50, false);
+			timer_start();
+			graph->matrix_rep->spp_dijkstra(0, n - 1);
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << "\n";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 99, false);
+			timer_start();
+			graph->matrix_rep->mst_kruskal();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << "macierz; " << n << "; 99;" << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 99, false);
+			timer_start();
+			graph->matrix_rep->mst_prim();
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << ";";
+
+		suma = 0;
+		for (int i = 0; i < s; i++) {
+			graph->generateRandomGraph(n, 99, false);
+			timer_start();
+			graph->matrix_rep->spp_dijkstra(0, n - 1);
+			timer_stop();
+			suma += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+		}
+		resultFile << (double)suma / s << "\n";
+	}
+
+
+
+
+	resultFile.close();
+}
+
+void Menu::timer_start()
+{
+	start_time = std::chrono::high_resolution_clock::now();
+}
+void Menu::timer_stop()
+{
+	end_time = std::chrono::high_resolution_clock::now();
 }

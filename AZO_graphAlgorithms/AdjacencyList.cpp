@@ -142,6 +142,10 @@ List* AdjacencyList::mst_prim() {
 	do {
 		if (!visited[currentNode]) {	//jeœli wierzcho³ek ju¿ by³ odwiedzony zostaje odrzucony
 			result->push(e);	//krawêdŸ wybrana w poprzednim przebiegu pêtli zostaje dodana do rozwi¹zania (krawêdzie o wadze 0 s¹ ignorowanê przez metodê List::push)
+			if (adjList[currentNode]->next == nullptr) {	// w przypadku, gdy dany wierzcho³ek nie ma krawêdzi do dodania jest pomijany
+				currentNode++;
+				continue;
+			}
 			holder = adjList[currentNode];
 			while (holder->next != nullptr) {	//dodanie wszystkich krawêdzi odwiedzanego wierzcho³ka do kolejki
 				holder = holder->next;

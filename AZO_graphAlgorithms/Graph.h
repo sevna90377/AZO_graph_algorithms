@@ -40,6 +40,10 @@ public:
 	void mst_prim();
 	void spp_dijkstra(int vp, int vk);
 
+
+	IncidencyMatrix* matrix_rep;
+	AdjacencyList* list_rep;
+
 private:
 
 	int size;
@@ -49,7 +53,5 @@ private:
 
 	void add_edge(int pos, int v1, int v2, int weight);
 
-	IncidencyMatrix* matrix_rep;
-	AdjacencyList* list_rep;
 };
 
