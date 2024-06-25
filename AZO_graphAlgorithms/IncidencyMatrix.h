@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Heap.h"
+#include "EdgeHeap.h"
 #include "List.h"
 #include "DisjointSets.h"
 #include <string>
@@ -25,6 +25,8 @@ public:
 
 	List* mst_kruskal();
 	List* mst_prim();
+
+	std::string spp_dijkstra(int vp, int vk);
 
 private:
 	int graph_order;

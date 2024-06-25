@@ -1,15 +1,15 @@
-#include "Heap.h"
+#include "VerticeHeap.h"
 
-//dodawanie nowej krawêdzi do kopca
-void Heap::push(Edge* e) {
+//dodawanie nowego wierzcho³ka do kopca
+void VerticeHeap::push(Vertice * v) {
 
-    Edge** newPointer = new Edge*[heap_length + 1];
+    Vertice** newPointer = new Vertice * [heap_length + 1];
 
     for (int i = 0; i < heap_length; i++) {
         newPointer[i] = rootPointer[i];
     }
 
-    newPointer[heap_length] = e;
+    newPointer[heap_length] = v;
     heap_length++;
 
     delete[] rootPointer;
@@ -19,9 +19,9 @@ void Heap::push(Edge* e) {
 }
 
 //usuwanie korzenia kopca
-Edge* Heap::pop() {
+Vertice* VerticeHeap::pop() {
 
-    Edge* holder = rootPointer[0];
+    Vertice* holder = rootPointer[0];
 
     rootPointer[0] = rootPointer[heap_length - 1];
     heap_length--;
@@ -31,7 +31,7 @@ Edge* Heap::pop() {
     return holder;
 }
 
-void Heap::heapifyUp(int i) {
+void VerticeHeap::heapifyUp(int i) {
     int l = 2 * i + 1;
     int r = 2 * i + 2;
     int smallest;
@@ -39,7 +39,7 @@ void Heap::heapifyUp(int i) {
     if (l < heap_length) {
 
         //sprawdzenie czy lewy potomek jest mniejszy od swojego ojca
-        if (rootPointer[l]->weight < rootPointer[i]->weight) {
+        if (rootPointer[l]->distance < rootPointer[i]->distance) {
             smallest = l;
         }
         else {
@@ -47,13 +47,13 @@ void Heap::heapifyUp(int i) {
         }
 
         //sprawdzenie czy prawy potomek jest mniejszy od ojca lub lewego potomka
-        if (r < heap_length && rootPointer[r]->weight < rootPointer[smallest]->weight) {
+        if (r < heap_length && rootPointer[r]->distance < rootPointer[smallest]->distance) {
             smallest = r;
         }
 
         //zamiana wartoœci miejscami
         if (smallest != i) {
-            Edge* holder;
+            Vertice* holder;
 
             holder = rootPointer[i];
             rootPointer[i] = rootPointer[smallest];
@@ -65,7 +65,7 @@ void Heap::heapifyUp(int i) {
     if (i > 0) { heapifyUp((i - 1) >> 1); }
 }
 
-void Heap::heapifyDown(int i) {
+void VerticeHeap::heapifyDown(int i) {
     int l = 2 * i + 1;
     int r = 2 * i + 2;
     int smallest;
@@ -73,7 +73,7 @@ void Heap::heapifyDown(int i) {
     if (l > 0 && l < heap_length) {
 
         //sprawdzenie czy lewy potomek jest mniejszy od swojego ojca
-        if (rootPointer[l]->weight < rootPointer[i]->weight) {
+        if (rootPointer[l]->distance < rootPointer[i]->distance) {
             smallest = l;
         }
         else {
@@ -82,14 +82,14 @@ void Heap::heapifyDown(int i) {
 
         if (heap_length > 2) {
             //sprawdzenie czy prawy potomek jest wiêkszy od swojego ojca
-            if (r < heap_length && rootPointer[r]->weight < rootPointer[smallest]->weight) {
+            if (r < heap_length && rootPointer[r]->distance < rootPointer[smallest]->distance) {
                 smallest = r;
             }
         }
 
         //zamiana wartoœci miejscami
         if (smallest != i) {
-            Edge* holder;
+            Vertice* holder;
 
             holder = rootPointer[i];
             rootPointer[i] = rootPointer[smallest];
@@ -102,7 +102,7 @@ void Heap::heapifyDown(int i) {
     }
 }
 
-void Heap::display()
+void VerticeHeap::display()
 {
     if (rootPointer != nullptr) {
         display("", "", 0);     //metoda rysuj¹ca kopiec
@@ -110,7 +110,7 @@ void Heap::display()
         std::cout << std::endl;
 
         //for (int i = 0; i < heap_length; i++) {     //wypisanie tablicowe kopca
-        //    std::cout << rootPointer[i]->weight << ", ";
+        //    std::cout << rootPointer[i]->distance << ", ";
         //}
     }
     else {
@@ -118,7 +118,7 @@ void Heap::display()
     }
 }
 
-void Heap::display(std::string sp, std::string sn, int from)
+void VerticeHeap::display(std::string sp, std::string sn, int from)
 {
     std::string cr, cl, cp;
     cr = cl = cp = "  ";
@@ -135,7 +135,7 @@ void Heap::display(std::string sp, std::string sn, int from)
 
         s = s.substr(0, sp.length() - 2);
 
-        std::cout << s << sn << rootPointer[from]->weight << "\n";
+        std::cout << s << sn << rootPointer[from]->distance << "\n";
 
         s = sp;
         if (sn == cl) s[s.length() - 2] = ' ';

@@ -132,19 +132,22 @@
     <ClInclude Include="DisjointSets.h" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Graph.h" />
-    <ClInclude Include="Heap.h" />
+    <ClInclude Include="EdgeHeap.h" />
     <ClInclude Include="IncidencyMatrix.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Vertice.h" />
+    <ClInclude Include="VerticeHeap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdjacencyList.cpp" />
     <ClCompile Include="DisjointSets.cpp" />
     <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="Heap.cpp" />
+    <ClCompile Include="EdgeHeap.cpp" />
     <ClCompile Include="IncidencyMatrix.cpp" />
     <ClCompile Include="List.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="VerticeHeap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

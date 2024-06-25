@@ -2,9 +2,10 @@
 
 #include <iostream>
 #include <string>
-#include "Heap.h"
+#include "EdgeHeap.h"
 #include "DisjointSets.h"
 #include "List.h"
+#include "VerticeHeap.h"
 
 class List;
 
@@ -12,8 +13,8 @@ class AdjacencyList
 {
 public:
 	struct ListNode {
-		int node;
-		int weight;
+		int id;	//nr wierzcho³ka
+		int weight;		//waga krawêdzi prowadz¹cej do tego wierzcho³ka 
 		ListNode* next;
 	};
 
@@ -32,6 +33,8 @@ public:
 
 	List* mst_kruskal();
 	List* mst_prim();
+
+	std::string spp_dijkstra(int vp, int vk);
 
 private:
 	int graph_order;

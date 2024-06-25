@@ -8,14 +8,13 @@ void AdjacencyList::display() {
 		std::cout << i;
 		ListNode* holder = adjList[i]->next;
 		while (holder != nullptr) {
-			std::cout << " ->" << pad(std::to_string(holder->node), 2) << ":" << pad(std::to_string(holder->weight), 3);
+			std::cout << " ->" << pad(std::to_string(holder->id), 2) << ":" << pad(std::to_string(holder->weight), 3);
 			holder = holder->next;
 		}
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 }
-
 std::string AdjacencyList::pad(std::string string, int length) {
 	std::string padding = " ";
 	std::string result = string;
@@ -41,12 +40,11 @@ void AdjacencyList::allocate(int order)
 
 	for (int i = 0; i < graph_order; i++) {
 		adjList[i] = new ListNode;
-		adjList[i]->node = i;
+		adjList[i]->id = i;
 		adjList[i]->weight = 0;
 		adjList[i]->next = nullptr;
 	}
 }
-
 void AdjacencyList::deallocate()
 {
 	ListNode* holder, * next_holder;
@@ -73,7 +71,7 @@ void AdjacencyList::addEdge(int v1, int v2, int value, bool directed) {
 	}
 	holder->next = new ListNode;	//przypisanie nowego elementu na koñcu
 	holder = holder->next;
-	holder->node = v2;				//ustawienie wartoœci dla nowego elementu
+	holder->id = v2;				//ustawienie wartoœci dla nowego elementu
 	holder->weight = value;
 	holder->next = nullptr;
 
@@ -85,7 +83,7 @@ void AdjacencyList::addEdge(int v1, int v2, int value, bool directed) {
 		}
 		holder->next = new ListNode;	
 		holder = holder->next;
-		holder->node = v1;		
+		holder->id = v1;		
 		holder->weight = value;
 		holder->next = nullptr;
 	}
@@ -96,7 +94,7 @@ List* AdjacencyList::mst_kruskal() {
 	List* result = new List();
 
 	//utworzenie kolejki priorytetowej (kruskal, wiêc wszystkich) krawêdzi
-	Heap* minEdgeHeap = new Heap();
+	EdgeHeap* minEdgeHeap = new EdgeHeap();
 	Edge* e;
 
 	ListNode* holder;
@@ -104,10 +102,10 @@ List* AdjacencyList::mst_kruskal() {
 		holder = adjList[i];
 		while (holder->next != nullptr) { 
 			holder = holder->next;
-			if (holder->node > i) {
+			if (holder->id > i) {
 				e = new Edge;
 				e->v1 = i;
-				e->v2 = holder->node;
+				e->v2 = holder->id;
 				e->weight = holder->weight;
 				minEdgeHeap->push(e);
 			}
@@ -125,7 +123,6 @@ List* AdjacencyList::mst_kruskal() {
 
 	return result;
 }
-
 List* AdjacencyList::mst_prim() {
 
 	List* result = new List();
@@ -138,7 +135,7 @@ List* AdjacencyList::mst_prim() {
 
 	int currentNode = 0;	//wierzcho³ek pocz¹tkowy 0 !
 
-	Heap* minEdgeHeap = new Heap();
+	EdgeHeap* minEdgeHeap = new EdgeHeap();
 	Edge* e = new Edge(0,0,0);
 	ListNode* holder;
 
@@ -150,7 +147,7 @@ List* AdjacencyList::mst_prim() {
 				holder = holder->next;
 				e = new Edge;
 				e->v1 = currentNode;
-				e->v2 = holder->node;
+				e->v2 = holder->id;
 				e->weight = holder->weight;
 				minEdgeHeap->push(e);
 			}
@@ -161,6 +158,57 @@ List* AdjacencyList::mst_prim() {
 		currentNode = e->v2;
 
 	} while (minEdgeHeap->heap_length > 0);
+
+	return result;
+}
+
+std::string AdjacencyList::spp_dijkstra(int vp, int vk)
+{
+	VerticeHeap* minDistanceHeap = new VerticeHeap();
+	Vertice** vertice = new Vertice * [graph_order];	//tablica wskaŸników pozwalaj¹ca zmieniaæ wartoœci w kopcu z O(1) - bez wyszukiwania odpowiedniego wierzcho³ka
+
+	Vertice* v;
+	for (int i = 0; i < graph_order; i++) {
+		v = new Vertice;
+		v->id = i;
+		v->previous = nullptr;
+		v->distance = i == vp ? 0 : 9999;	//odleg³oœæ pocz¹tkowego to 0, reszty "du¿a wartoœæ"
+		minDistanceHeap->push(v);
+		vertice[i] = v;		
+	}
+
+	ListNode* currentNode;
+	ListNode* holder;
+	int old_dist, new_dist;
+	while (minDistanceHeap->heap_length > 0) {
+		v = minDistanceHeap->pop();	// pobranie wierzcho³ka o minimalnej wadze
+		currentNode = adjList[v->id];	// znalezienie wierzcho³ka w liœcie s¹siedztwa
+
+		//przejœcie po wszystkich s¹siadach v i ustalenie im odleg³oœci oraz poprzednika
+		holder = currentNode;
+		while (holder->next != nullptr) {
+			holder = holder->next;
+			
+			old_dist = vertice[holder->id]->distance;	//obecny dystans s¹siada (id oznacza nr wierzcho³ka)
+			new_dist = v->distance + holder->weight; // odleg³oœæ do v + odleg³oœæ z v do rozpatrywanego s¹siada
+			
+			if (new_dist < old_dist) {	//jeœli nowa trasa jest krótsza nastêpuje relaksacja
+				vertice[holder->id]->distance = new_dist;
+				vertice[holder->id]->previous = v;
+			}
+		}
+		minDistanceHeap->heapifyDown(0);
+	}
+
+	v = vertice[vk];
+	std::string result;
+	do {
+		result = "[" + std::to_string(v->id) + "] " + result;
+		v = v->previous;
+	} while (v != nullptr);
+
+	v = vertice[vk];
+	result += "\n Calkowity koszt sciezki: " + std::to_string(v->distance);
 
 	return result;
 }

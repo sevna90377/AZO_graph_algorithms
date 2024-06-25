@@ -27,7 +27,6 @@ int Menu::main()
 			break;
 
 		case 's':		//w³asny case do przeprowadzania testów
-			graph->heaptest();
 			break;
 
 		default:
@@ -51,7 +50,7 @@ void Menu::menuMST()
 		std::cout << "1. Wczytaj z pliku\n";
 		std::cout << "2. Wygeneruj losowo\n";
 		std::cout << "3. Wyswietl\n";
-		std::cout << "\t4. Algorytm Prima X\n";
+		std::cout << "\t4. Algorytm Prima\n";
 		std::cout << "\t5. Algorytm Kruskala\n";
 		std::cout << "> ";
 		opt = _getche();
@@ -106,19 +105,21 @@ void Menu::menuMST()
 
 void Menu::menuSPP()
 {
-	
 	char opt;
 	std::string filename;
 	int order, density;
 	int min_density;
+	int vp = 0;
+	int vk = 1;
 
 	do {
 		std::cout << "\n=== Problem Najkrotszej Drogi ===\n";
 		std::cout << "1. Wczytaj z pliku\n";
-		std::cout << "2. Wygeneruj losowo X\n";
+		std::cout << "2. Wygeneruj losowo\n";
 		std::cout << "3. Wyswietl\n";
-		std::cout << "\t4. Algorytm Dijkstry X\n";
-		std::cout << "\t5. Algorytm Forda-Bellmana X\n";
+		std::cout << "\t4. Algorytm Dijkstry\n";
+		std::cout << "\t5. Algorytm Forda-Bellmana\n";
+		std::cout << "\t6. Wybor wierzcholka poczatkowego i koncowego\n";
 		std::cout << "> ";
 		opt = _getche();
 		std::cout << "\n";
@@ -152,7 +153,24 @@ void Menu::menuSPP()
 
 			graph->display();
 
+			break;
+
+		case '4':
+
+			graph->spp_dijkstra(vp, vk);
+
+			break;
+
+		case '6':
+			std::cout << "\nWierzcholek poczatkowy: > ";
+			std::cin >> vp;
+			std::cout << "\nWierzcholek koncowy: > ";
+			std::cin >> vk;
+
+			break;
+
 		default:
+
 			break;
 		}
 

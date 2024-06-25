@@ -10,47 +10,6 @@ void Graph::add_edge(int pos, int v1, int v2, int weight)
 	graph[pos]->weight = weight;
 }
 
-void Graph::heaptest()
-{
-	Heap* heap = new Heap();
-	
-	Edge* e = new Edge;
-	e->v1 = 1;
-	e->v2 = 3;
-	e->weight = 1;
-	heap->push(e);
-	e->v1 = 1;
-	e->v2 = 3;
-	e->weight = 5;
-	heap->push(e);
-	e->v1 = 1;
-	e->v2 = 3;
-	e->weight = 8;
-	heap->push(e);
-	e->v1 = 1;
-	e->v2 = 3;
-	e->weight = 7;
-	heap->push(e);
-	e->v1 = 1;
-	e->v2 = 3;
-	e->weight = 2;
-	heap->push(e);
-	e->v1 = 1;
-	e->v2 = 3;
-	e->weight = 0;
-	heap->push(e);
-	e->v1 = 1;
-	e->v2 = 3;
-	e->weight = 3;
-	heap->push(e);
-	e->v1 = 1;
-	e->v2 = 3;
-	e->weight = 1;
-	heap->push(e);
-
-	heap->display();
-}
-
 void Graph::display()
 {
 	list_rep->display();
@@ -212,4 +171,16 @@ void Graph::mst_prim()	//wynikiem algorytmu jest lista krawêdzi
 	mst = list_rep->mst_prim();
 	std::cout << mst->toString() << std::endl;
 	std::cout << "Calkowita waga MST: " << mst->sumWeight() << std::endl;
+}
+
+void Graph::spp_dijkstra(int vp, int vk)	//wynikiem algorytmu jest œcie¿ka i koszt
+{
+	std::string spp;
+	std::cout << "Najkrotsza sciezka z \n" << vp << " do " << vk << "\n";
+	std::cout << "\nZ reprezentacji macierzowej: \n";
+	spp = matrix_rep->spp_dijkstra(vp, vk);
+	std::cout << spp;
+	std::cout << "\nZ reprezentacji listowej: \n";
+	spp = list_rep->spp_dijkstra(vp, vk);
+	std::cout << spp;
 }

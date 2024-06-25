@@ -1,7 +1,7 @@
 #pragma once
 #include "IncidencyMatrix.h"
 #include "AdjacencyList.h"
-#include "Heap.h"
+#include "EdgeHeap.h"
 #include "List.h"
 #include <iostream>
 #include <fstream>
@@ -10,9 +10,6 @@
 class Graph
 {
 public:
-
-	void heaptest();
-
 	Graph() {
 		matrix_rep = new IncidencyMatrix();
 		list_rep = new AdjacencyList();
@@ -30,7 +27,7 @@ public:
 		delete graph;
 	};
 
-	const int MAX_WEIGHT = 99;
+	const int MAX_WEIGHT = 97;
 
 	void display();
 	
@@ -41,6 +38,7 @@ public:
 
 	void mst_kruskal();
 	void mst_prim();
+	void spp_dijkstra(int vp, int vk);
 
 private:
 

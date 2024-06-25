@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Heap.h"
+#include "EdgeHeap.h"
 #include "Edge.h"
 
 class List{

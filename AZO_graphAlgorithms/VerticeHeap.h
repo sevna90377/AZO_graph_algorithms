@@ -1,29 +1,30 @@
 #pragma once
 
 #include <iostream>
-#include "Edge.h"
+#include "Vertice.h"
 
-class Heap{
+class VerticeHeap {
 public:
 
-	Heap() {
+	VerticeHeap() {
 		heap_length = 0;
 		rootPointer = nullptr;
 	};
-	~Heap() {
+	~VerticeHeap() {
 		delete[] rootPointer;
 	};
 
 	void display();
-	void push(Edge* e);
-	Edge* pop();
+	void push(Vertice* e);
+	Vertice* pop();
+	void heapifyDown(int i);
 
 	int heap_length;
 
 private:
-	Edge** rootPointer;
+	Vertice** rootPointer;
 
 	void heapifyUp(int i);
-	void heapifyDown(int i);
 	void display(std::string sp, std::string sn, int from);
 };
+

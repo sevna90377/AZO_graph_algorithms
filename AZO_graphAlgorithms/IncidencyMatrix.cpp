@@ -1,4 +1,5 @@
 #include "IncidencyMatrix.h"
+#include "VerticeHeap.h"
 
 
 
@@ -66,7 +67,7 @@ List* IncidencyMatrix::mst_kruskal()
 	List* result = new List();
 
 	//utworzenie kolejki priorytetowej krawêdzi
-	Heap* minEdgeHeap = new Heap();
+	EdgeHeap* minEdgeHeap = new EdgeHeap();
 	Edge* e;
 	bool first_added;	//flaga oznaczaj¹ca, czy ju¿ zosta³ dodany pierwszy wierzcho³ek
 	for (int i = 0; i < graph_size; i++) {
@@ -113,7 +114,7 @@ List* IncidencyMatrix::mst_prim()
 
 	int currentNode = 0;	//wierzcho³ek pocz¹tkowy 0 !
 
-	Heap* minEdgeHeap = new Heap();
+	EdgeHeap* minEdgeHeap = new EdgeHeap();
 	Edge* e = new Edge(0, 0, 0);
 	do {
 		if (!visited[currentNode]) {
@@ -139,6 +140,59 @@ List* IncidencyMatrix::mst_prim()
 		currentNode = e->v2;
 
 	} while (minEdgeHeap->heap_length > 0);
+
+	return result;
+}
+
+std::string IncidencyMatrix::spp_dijkstra(int vp, int vk) 
+{
+	VerticeHeap* minDistanceHeap = new VerticeHeap();
+	Vertice** vertice = new Vertice * [graph_order];
+
+	Vertice* v;
+	for (int i = 0; i < graph_order; i++) {
+		v = new Vertice;
+		v->id = i;
+		v->previous = nullptr;
+		v->distance = i == vp ? 0 : 9999;	//odleg³oœæ pocz¹tkowego to 0, reszty "du¿a wartoœæ"
+		minDistanceHeap->push(v);
+		vertice[i] = v;
+	}
+
+	int old_dist, new_dist;
+	while (minDistanceHeap->heap_length > 0) {
+		v = minDistanceHeap->pop();
+		
+		for (int i = 0; i < graph_size; i++) {	//przejœcie po macierzy w poszukiwaniu krawêdzi wychodz¹cych z v
+			if (incMatrix[v->id][i] > 0) {
+				for (int j = 0; j < graph_order; j++) {	//znalezienie drugiego wierzcho³ka
+					if (j != v->id && incMatrix[j][i] < 0) {
+						
+						old_dist = vertice[j]->distance;
+						new_dist = v->distance + incMatrix[v->id][i];
+
+						if (new_dist < old_dist) {	//jeœli nowa trasa jest krótsza nastêpuje relaksacja
+							vertice[j]->distance = new_dist;
+							vertice[j]->previous = v;
+						}
+
+						break;
+					}
+				}
+			}
+		}
+		minDistanceHeap->heapifyDown(0);
+	}
+
+	v = vertice[vk];
+	std::string result;
+	do {
+		result = "[" + std::to_string(v->id) + "] " + result;
+		v = v->previous;
+	} while (v != nullptr);
+
+	v = vertice[vk];
+	result += "\n Calkowity koszt sciezki: " + std::to_string(v->distance);
 
 	return result;
 }
