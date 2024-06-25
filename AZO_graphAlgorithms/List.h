@@ -22,7 +22,9 @@ public:
 	void push(Edge* e);
 	Edge* get();
 	void deleteAll();
-	void display(int option);	// 1 - macierz 2 - lista
+
+	std::string toString();
+	int sumWeight();
 
 private:
 	ListElement* headPointer;

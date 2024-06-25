@@ -114,7 +114,7 @@ void Graph::generateRandomGraph(int graph_order, int graph_density, bool directe
 
 			if (next == previous) {
 				already_connected = true;
-				break;
+				continue;
 			}
 
 			for (int j = 0; j < i; j++) {
@@ -186,9 +186,30 @@ int Graph::minDensity(int graph_order, bool directed)
 	}
 }
 
-void Graph::mst_kruskal()
+void Graph::mst_kruskal()	//wynikiem algorytmu jest lista krawêdzi
 {
-	matrix_rep->mst_kruskal();
-	list_rep->mst_kruskal();
+	List* mst;
+	std::cout << "Minimalne drzewo rozpinajace bedace wynikiem algorytmu Kruskala \n";
+	std::cout << "\nZ reprezentacji macierzowej: \n";
+	mst = matrix_rep->mst_kruskal();
+	std::cout << mst->toString() << std::endl;
+	std::cout << "Calkowita waga MST: " << mst->sumWeight() << std::endl;
+	std::cout << "\nZ reprezentacji listowej: \n";
+	mst = list_rep->mst_kruskal();
+	std::cout << mst->toString() << std::endl;
+	std::cout << "Calkowita waga MST: " << mst->sumWeight() << std::endl;
 }
 
+void Graph::mst_prim()	//wynikiem algorytmu jest lista krawêdzi
+{
+	List* mst;
+	std::cout << "Minimalne drzewo rozpinajace bedace wynikiem algorytmu Prima \n";
+	std::cout << "\nZ reprezentacji macierzowej: \n";
+	mst = matrix_rep->mst_prim();
+	std::cout << mst->toString() << std::endl;
+	std::cout << "Calkowita waga MST: " << mst->sumWeight() << std::endl;
+	std::cout << "\nZ reprezentacji listowej: \n";
+	mst = list_rep->mst_prim();
+	std::cout << mst->toString() << std::endl;
+	std::cout << "Calkowita waga MST: " << mst->sumWeight() << std::endl;
+}

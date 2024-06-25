@@ -40,6 +40,7 @@ public:
 	int minDensity(int graph_order, bool directed);
 
 	void mst_kruskal();
+	void mst_prim();
 
 private:
 

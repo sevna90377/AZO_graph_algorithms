@@ -87,8 +87,12 @@ void Menu::menuMST()
 
 			break;
 
-		case '5':
+		case '4':
+			graph->mst_prim();
 
+			break;
+
+		case '5':
 			graph->mst_kruskal();
 
 			break;

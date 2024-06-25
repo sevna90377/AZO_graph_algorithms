@@ -1,7 +1,5 @@
 #include "AdjacencyList.h"
 
-#include<string>
-
 void AdjacencyList::display() {
 
 	std::cout << std::endl << "Graf w reprezentacji listowej: " << std::endl;
@@ -93,11 +91,11 @@ void AdjacencyList::addEdge(int v1, int v2, int value, bool directed) {
 	}
 }
 
-void AdjacencyList::mst_kruskal() {
+List* AdjacencyList::mst_kruskal() {
 
 	List* result = new List();
 
-	//utworzenie kolejki priorytetowej krawêdzi
+	//utworzenie kolejki priorytetowej (kruskal, wiêc wszystkich) krawêdzi
 	Heap* minEdgeHeap = new Heap();
 	Edge* e;
 
@@ -125,46 +123,44 @@ void AdjacencyList::mst_kruskal() {
 		}
 	}
 
-	result->display(0);
+	return result;
 }
 
-/*
-void AdjacencyList::mst_prim() {
+List* AdjacencyList::mst_prim() {
 
-	Heap heap;
-	Edge edge;
+	List* result = new List();
+
+	//tablica pamiêtaj¹ca odwiedzone wierzcho³ki;
 	bool* visited = new bool[graph_order];
-	for (int i = 1; i < graph_order; i++) {
+	for (int i = 0; i < graph_order; i++) {
 		visited[i] = false;
 	}
-	List resultList;
 
+	int currentNode = 0;	//wierzcho³ek pocz¹tkowy 0 !
+
+	Heap* minEdgeHeap = new Heap();
+	Edge* e = new Edge(0,0,0);
 	ListNode* holder;
-	int currentNode = 0;
 
-	visited[currentNode] = true;
-
-	for (int i = 0; i < graph_order - 1; i++) {
-		holder = &adjList[currentNode];
-		while (holder->next != nullptr) {
-			holder = holder->next;
-			if (!visited[holder->node]) {
-				edge.v1 = currentNode;
-				edge.v2 = holder->node;
-				edge.weight = holder->weight;
-				heap.push(edge);
+	do {
+		if (!visited[currentNode]) {	//jeœli wierzcho³ek ju¿ by³ odwiedzony zostaje odrzucony
+			result->push(e);	//krawêdŸ wybrana w poprzednim przebiegu pêtli zostaje dodana do rozwi¹zania (krawêdzie o wadze 0 s¹ ignorowanê przez metodê List::push)
+			holder = adjList[currentNode];
+			while (holder->next != nullptr) {	//dodanie wszystkich krawêdzi odwiedzanego wierzcho³ka do kolejki
+				holder = holder->next;
+				e = new Edge;
+				e->v1 = currentNode;
+				e->v2 = holder->node;
+				e->weight = holder->weight;
+				minEdgeHeap->push(e);
 			}
+			visited[currentNode] = true;
 		}
 
-		do {
-			edge = heap.pop();
-		} while (visited[edge.v2]);
+		e = minEdgeHeap->pop();	//wybór krawêdzi incydentnej z ju¿ odwiedzonymi wierzcho³kami o minimalnej wadze
+		currentNode = e->v2;
 
-		resultList.addValue(edge);
-		visited[edge.v2] = true;
-		currentNode = edge.v2;
-	}
+	} while (minEdgeHeap->heap_length > 0);
 
-	resultList.display(0);
+	return result;
 }
-*/

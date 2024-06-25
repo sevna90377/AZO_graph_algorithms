@@ -1,6 +1,11 @@
 #include "List.h"
+#include <string>
 
 void List::push(Edge* e){
+
+	if (e->weight == 0) {	//waga 0 oznacza brak krawêdzi
+		return;
+	}
 
 	ListElement* newElement = new ListElement;
 		newElement->edge = e;
@@ -45,33 +50,33 @@ void List::deleteAll() {
 	}
 }
 
-void List::display(int option) {
+std::string List::toString() {
 
 	if (headPointer != nullptr) {
-		std::cout << "Wynik algorytmu dzialajacego na reprezentacji";
-		if (option == 1) {
-			std::cout << " macierzowej:\n";
-		}
-		else {
-			std::cout << " listowej:\n";
-		}
-
+	
 		ListElement* holder = headPointer;
+		std::string result = "";
 
 		do {
-			std::cout << " [" << holder->edge->v1 << ";" << holder->edge->v2 << "] " << holder->edge->weight << " ,";
+			result += 
+				" [" + std::to_string(holder->edge->v1) + "-" + std::to_string(holder->edge->v2) +  "] "
+				+ std::to_string(holder->edge->weight) + " ,";
 			holder = holder->next;
 		} while (holder != nullptr);
 
-		std::cout << std::endl;
-
-		int mst_weight = 0;
-		holder = headPointer;
-		do {
-			mst_weight += holder->edge->weight;
-			holder = holder->next;
-		} while (holder != nullptr);
-
-		std::cout << "Calkowita waga MST: " << mst_weight << std::endl;
+		return result;
 	}
+	return "Lista jest pusta";
+}
+
+int List::sumWeight() {
+	int weight = 0;
+	ListElement* holder = headPointer;
+
+	do {
+		weight += holder->edge->weight;
+		holder = holder->next;
+	} while (holder != nullptr);
+
+	return weight;
 }

@@ -1,9 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include "Heap.h"
-#include "List.h"
 #include "DisjointSets.h"
+#include "List.h"
+
+class List;
 
 class AdjacencyList
 {
@@ -27,8 +30,8 @@ public:
 	void allocate(int order);
 	void addEdge(int v1, int v2, int weight, bool directed);
 
-	void mst_kruskal();
-	void mst_prim();
+	List* mst_kruskal();
+	List* mst_prim();
 
 private:
 	int graph_order;
